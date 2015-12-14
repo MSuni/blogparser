@@ -4,13 +4,15 @@ public class Main {
 	
 
 	public static void main(String[] args) {
+
+//		BlogivirtaParser virtaParser = new BlogivirtaParser();
 		
-//		try {
-//			new BlogivirtaParser();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		new Parser();
+		try {
+		  BlogivirtaParser.parseUserBlogs();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//		new Parser();
 	}
 
 }

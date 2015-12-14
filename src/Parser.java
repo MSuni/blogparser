@@ -31,7 +31,7 @@ public class Parser {
 		String desc;
 		String divc;
 
-		File file = new File("/users/blackstorm/BlogPolkuURL2.txt");
+		File file = new File("/users/user/BlogPolku.txt");
 
 		if (!file.exists()) {
 			try {
@@ -66,6 +66,10 @@ public class Parser {
 				document = Jsoup.connect(url + "?page=" + page).timeout(120 * 1000).get();
 
 				System.out.println("changing page document: " + url + "?page=" + page);
+				
+				
+				
+				
 				linkArray = new ArrayList<>();
 				links = document.select("a[class=blog-card__title-link]");
 
@@ -80,26 +84,44 @@ public class Parser {
 					}
 
 					linkArray.add(links.get(i).attr("href"));
-
-					document = Jsoup.connect("http://blogipolku.fi" + linkArray.get(i)).timeout(60 * 1000).get();
+					System.out.println("Connecting...");
+					document = Jsoup.connect("http://blogipolku.fi" + linkArray.get(i)).timeout(600 * 1000).get();
 
 					System.out.println("changing document: " + "http://blogipolku.fi" + linkArray.get(i));
-
-					Elements links2 = document.select("a[class=post-card__title-link]");
-					System.out.println("links 2 size" + links2.size());
+					Elements links2 = document.select("a[class=blog-view__title-link]");
+//					linkArray2.add("http://blogipolku.fi" + links2.get(0).attr("href"));
+					linkArray2.add(links2.get(0).attr("href"));
 					
+					System.out.println("Response Connecting to link:" + linkArray2.get(0) + " ...");
+//					linkArray2.add("http://blogipolku.fi" + links2.get(u).attr("href"));
+					try{
+					Response response = Jsoup.connect(linkArray2.get(0)).followRedirects(true).ignoreHttpErrors(true).execute();
+
+					bw.write(response.url() + System.getProperty("line.separator"));
+					} catch(Exception e){
+						continue;
+					}
+					
+//					Elements links2 = document.select("a[class=post-card__title-link]");
+//					System.out.println("links 2 size" + links2.size());
+//					
 					
 					
 
 //					bw.write("Page: " + page + System.getProperty("line.separator"));
 
-					for (int u = 0; u < links2.size(); u++) {
-
-						linkArray2.add("http://blogipolku.fi" + links2.get(u).attr("href"));
-						Response response = Jsoup.connect(linkArray2.get(u)).followRedirects(true).ignoreHttpErrors(true).execute();
-
-						bw.write(response.url() + System.getProperty("line.separator"));
-					}
+//					for (int u = 0; u < links2.size(); u++) {
+//						
+//						System.out.println("Response Connecting to link:" + u + " ...");
+//						linkArray2.add("http://blogipolku.fi" + links2.get(u).attr("href"));
+//						try{
+//						Response response = Jsoup.connect(linkArray2.get(u)).followRedirects(true).ignoreHttpErrors(true).execute();
+//
+//						bw.write(response.url() + System.getProperty("line.separator"));
+//						} catch(Exception e){
+//							continue;
+//						}
+//					}
 
 				}
 			}
