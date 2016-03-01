@@ -19,10 +19,10 @@ public class Main {
 
     // BlogivirtaParser virtaParser = new BlogivirtaParser();
 
-    testWriter();
+//    testWriter();
     
-//    Cumulus cumulus = new Cumulus();
-//    cumulus.usehtmlunit();
+    Cumulus cumulus = new Cumulus();
+    cumulus.usehtmlunit(9, 9, "pinja");
   }
 
   private static void testWriter() {
@@ -54,23 +54,31 @@ public class Main {
     try {
 
       HtmlPage page = webClient.getPage(
-	  "https://www.tripadvisor.fi/ShowUserReviews-g189908-d249055-r69627551-Cumulus_Kuopio_Hotel-Kuopio_Northern_Savonia.html#CHECK_RATES_CONT");
+	  "http://www.tripadvisor.com/Hotel_Review-g189948-d238534-Reviews-Hotelli_Cumulus_Koskikatu-Tampere_Pirkanmaa.html#REVIEWS");
 
       
        List<DomAttr> rating2 = (List) page.getByXPath("//img[@class='sprite-rating_no_fill rating_no_fill no30']/@alt");
 
-       System.out.println("about to");
 //       rating2.get(0);
 //       bw.write(rating2.get(0).toString());
-       System.out.println("get");
 
+
+	 System.out.println("Anything here?");
+
+	  List<DomAttr> pageLinks = (List) page.getByXPath("//link[@rel='next']/@href");
+//       List<DomElement> divs = (List) page.getByXPath("//div[@class='entry']");
+//       List<DomAttr> attris = (List) page.getByXPath("//div[@class='entry']/@p");
+	 System.out.println("list size " + pageLinks.size());
+//	 System.out.println("list size " + attris.size());
        
-//       List<DomElement> divs = (List) page.getByXPath("//div[@class='  reviewSelector ']");
-       
-//       for (int i = 0; i < divs.size(); i++){
+       for (int i = 0; i < pageLinks.size(); i++){
+	 System.out.println("found something");
+	 System.out.println("it's here " + pageLinks.get(i));
 //	 bw.write(divs.get(i) + System.getProperty("line.separator"));
-//	 
-//       }
+//	 bw.write(divs.get(i).asText() + System.getProperty("line.separator"));
+//	 bw.write(divs.get(i).getTextContent() + System.getProperty("line.separator"));
+	 
+       }
 
        
 //       List<DomElement> textDiv = (List) page.getByXPath("//div[@class='entry']");
