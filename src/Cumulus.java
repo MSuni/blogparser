@@ -21,6 +21,7 @@ import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlRadioButtonInput;
 
 //28
 public class Cumulus {
@@ -225,6 +226,168 @@ public class Cumulus {
       e.printStackTrace();
     }
   }
+  
+  public void getOneHotel(String url, String hotelname){
+    
+    this.hotelname = hotelname;
+    final WebClient webClient = new WebClient();
+    webClient.getOptions().setThrowExceptionOnScriptError(false);
+
+    webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+
+
+    changeFile(hotelname + "1.txt");
+    
+    
+    try {
+      HtmlPage page = webClient.getPage(url);
+      // webClient.getPage("http://www.google.fi")
+      System.out.println("success");
+
+//      List<HtmlRadioButtonInput> radioButton = (List<HtmlRadioButtonInput>) page.getByXPath("//input[@id='taplc_prodp13n_hr_sur_review_filter_controls_0_filterLang_more_fi']");
+//      radioButton.get(0).setChecked(true);
+
+	for (int pageFor = 0; true; pageFor++) {
+
+	  List<DomAttr> pageLinks = (List) page.getByXPath("//link[@rel='next']/@href");
+	  if (pageLinks.size() == 0) {
+	    System.out.println("Next Page not found");
+	    break;
+	  } else if (pageFor != 0) {
+	    System.out.println("Next Page found");
+	    page = webClient.getPage("https://www.tripadvisor.fi" + pageLinks.get(0).getValue().toString());
+	  }
+
+	  // get review links
+	  List<DomAttr> reviewLinks = (List) page.getByXPath("//div[@class='innerBubble']//a/@href");
+	  System.out.println("reviews inc");
+	  // example review links
+
+	  for (int reviewFor = 0; reviewFor < reviewLinks.size(); reviewFor++) {
+	    // get the text!!
+	    if (("https://www.tripadvisor.fi" + reviewLinks.get(reviewFor).getValue().toString()).equals("https://www.tripadvisor.fi/apps")){
+	      continue;
+	    }
+	    
+	    page = webClient.getPage("https://www.tripadvisor.fi" + reviewLinks.get(reviewFor).getValue().toString());
+	    
+	    
+	    System.out.println("getting stars");
+	    System.out.println("getting stars");
+	    System.out.println("getting stars");
+	    System.out.println("getting stars");
+	    System.out.println("getting stars");
+	    System.out.println("getting stars");
+
+	    List<DomAttr> rating1 = null;
+	    List<DomAttr> rating2 = null;
+	    List<DomAttr> rating3 = null;
+	    List<DomAttr> rating4 = null;
+	    List<DomAttr> rating5 = null;
+	    // reviewRating
+	    try {
+	      rating1 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s10']/@property");
+	      if (rating1.get(0).toString() != "" ) {
+		changeFile(hotelname + "1.txt");
+	      }
+	    } catch (IndexOutOfBoundsException e) {
+	      System.out.println("Right amount of stars not found");
+	    }
+	    try {
+	      rating2 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s20']/@property");
+	      if (rating2.get(0).toString() != "" ) {
+		changeFile(hotelname + "2.txt");
+	      }
+	    }catch (IndexOutOfBoundsException e) {
+	      System.out.println("Right amount of stars not found");
+	    } try {
+	      rating3 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s30']/@property");
+	      if (rating3.get(0).toString() != "" ) {
+		changeFile(hotelname + "3.txt");
+	      }
+	    }catch (IndexOutOfBoundsException e) {
+	      System.out.println("Right amount of stars not found");
+	    } try {
+	      rating4 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s40']/@property");
+	      if (rating4.get(0).toString() != "" ) {
+		changeFile(hotelname + "4.txt");
+	      }
+	    }catch (IndexOutOfBoundsException e) {
+	      System.out.println("Right amount of stars not found");
+	    } try {
+	      rating5 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s50']/@property");
+	      if (rating5.get(0).toString() != "" ) {
+		changeFile(hotelname + "5.txt");
+	      }
+	    }catch (IndexOutOfBoundsException e) {
+	      System.out.println("Right amount of stars not found");
+	    }
+	    
+		System.out.println("rating found");
+		List<DomElement> textDiv = (List) page.getByXPath("//div[@class='entry']");
+		if (!textDiv.isEmpty()) {
+		  System.out.println("got the text");
+		  System.out.println(textDiv.get(0).getTextContent());
+		  String text = textDiv.get(0).getTextContent() + System.getProperty("line.separator");
+		  text.replaceAll("(\\r|\\n)", " ");
+
+		  bw.write(text);
+		  bw.flush();
+	      } else {
+//		bw.write("not found " + "https://www.tripadvisor.fi" + reviewLinks.get(reviewFor).getValue().toString() + System.getProperty("line.separator"));
+//		bw.flush();
+		System.out.println("Text not found. Shutting down");
+		
+		System.exit(0);
+	      }
+	    
+
+	  }
+
+	  //get back to review list page, so next page can be checked
+	  if (pageFor == 0) {
+	    page = webClient.getPage(url);
+	  } else {
+	    page = webClient.getPage("https://www.tripadvisor.fi" + pageLinks.get(0).getValue().toString());
+	  }
+
+	}
+      
+
+    } catch (
+
+    FailingHttpStatusCodeException e2)
+
+    {
+      e2.printStackTrace();
+    } catch (
+
+    MalformedURLException e2)
+
+    {
+      e2.printStackTrace();
+    } catch (
+
+    IOException e2)
+
+    {
+      e2.printStackTrace();
+    }
+
+    try
+
+    {
+      bw.close();
+    } catch (
+
+    IOException e)
+
+    {
+      e.printStackTrace();
+    }
+  }
+    
+  
   
   private void changeFile(String filename){
     
