@@ -1,4 +1,4 @@
-
+package src;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -91,6 +91,7 @@ public class Cumulus {
 	  for (int reviewFor = 0; reviewFor < reviewLinks.size(); reviewFor++) {
 	    // get the text!!
 	    page = webClient.getPage("https://www.tripadvisor.com" + reviewLinks.get(reviewFor).getValue().toString());
+	    webClient.waitForBackgroundJavaScript(16 * 1000);
 
 	    System.out.println("getting stars");
 	    System.out.println("getting stars");
@@ -262,6 +263,7 @@ public class Cumulus {
 	    }
 	    
 	    page = webClient.getPage("https://www.tripadvisor.fi" + reviewLinks.get(reviewFor).getValue().toString());
+	    webClient.waitForBackgroundJavaScript(3 * 1000);
 	    
 	    
 	    System.out.println("getting stars");
@@ -383,7 +385,7 @@ public class Cumulus {
   
   private void changeFile(String filename){
     
-    File file = new File("/users/user/" + filename);
+    File file = new File("/users/Blackstorm/" + filename);
     System.out.println("changing file to: /users/Blackstorm/" + filename);
     
     if (!file.exists()) {
