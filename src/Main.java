@@ -1,4 +1,4 @@
-package src;
+
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,12 +17,8 @@ public class Main {
 
   public static void main(String[] args) {
 
-    // BlogivirtaParser virtaParser = new BlogivirtaParser();
-
-//    testWriter();
-    
-    Cumulus cumulus = new Cumulus();
-    cumulus.usehtmlunit(9, 9, "pinja");
+//      new Burger().usejsoup();
+      new Burger().getReviews();
   }
 
   private static void testWriter() {
