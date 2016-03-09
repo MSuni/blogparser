@@ -17,8 +17,18 @@ public class Main {
 
   public static void main(String[] args) {
 
+<<<<<<< HEAD
 //      new Burger().usejsoup();
       new Burger().getReviews();
+=======
+    // BlogivirtaParser virtaParser = new BlogivirtaParser();
+
+//    testWriter();
+    
+    Cumulus cumulus = new Cumulus();
+//    cumulus.usehtmlunit(30, 31, "airporthotel");
+    cumulus.getOneHotel("https://www.tripadvisor.fi/Hotel_Review-g189945-d249057-Reviews-Cumulus_Pori_Hotel-Pori_Satakunta.html", "poriFIN");
+>>>>>>> branch 'master' of https://github.com/MSuni/blogparser.git
   }
 
   private static void testWriter() {
@@ -50,10 +60,10 @@ public class Main {
     try {
 
       HtmlPage page = webClient.getPage(
-	  "http://www.tripadvisor.com/Hotel_Review-g189948-d238534-Reviews-Hotelli_Cumulus_Koskikatu-Tampere_Pirkanmaa.html#REVIEWS");
+	  "http://www.tripadvisor.com/ShowUserReviews-g189948-d238534-r335680803-Hotelli_Cumulus_Koskikatu-Tampere_Pirkanmaa.html#CHECK_RATES_CONT");
 
       
-       List<DomAttr> rating2 = (List) page.getByXPath("//img[@class='sprite-rating_no_fill rating_no_fill no30']/@alt");
+//       List<DomAttr> rating2 = (List) page.getByXPath("//img[@class='sprite-rating_no_fill rating_no_fill no30']/@alt");
 
 //       rating2.get(0);
 //       bw.write(rating2.get(0).toString());
@@ -61,7 +71,7 @@ public class Main {
 
 	 System.out.println("Anything here?");
 
-	  List<DomAttr> pageLinks = (List) page.getByXPath("//link[@rel='next']/@href");
+	  List<DomElement> pageLinks = (List) page.getByXPath("//div[@class='extended provider0 review inlineReviewUpdate first']");
 //       List<DomElement> divs = (List) page.getByXPath("//div[@class='entry']");
 //       List<DomAttr> attris = (List) page.getByXPath("//div[@class='entry']/@p");
 	 System.out.println("list size " + pageLinks.size());
@@ -69,7 +79,8 @@ public class Main {
        
        for (int i = 0; i < pageLinks.size(); i++){
 	 System.out.println("found something");
-	 System.out.println("it's here " + pageLinks.get(i));
+	 System.out.println("it's here " + pageLinks.get(i).getTextContent());
+	 bw.write(pageLinks.get(i).getTextContent() + System.getProperty("line.separator"));
 //	 bw.write(divs.get(i) + System.getProperty("line.separator"));
 //	 bw.write(divs.get(i).asText() + System.getProperty("line.separator"));
 //	 bw.write(divs.get(i).getTextContent() + System.getProperty("line.separator"));
