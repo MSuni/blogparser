@@ -1,3 +1,4 @@
+package src;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,114 +24,116 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class Burger {
 
-    FileWriter fw = null;
-    String url = "file:///C:/Android_work/burkeri/burkeri.htm";
-//    String url = "https://www.facebook.com/BurgerKingFI/reviews";
-    String hotelname;
-    BufferedWriter bw;
+  FileWriter fw = null;
+  String url = "file:///C:/Users/Blackstorm/Desktop/bks/Bks.htm";
+  // String url = "https://www.facebook.com/BurgerKingFI/reviews";
+  String hotelname;
+  BufferedWriter bw;
 
-    public Burger() {
+  public Burger() {
 
+  }
+
+  public void usejsoup() {
+
+    try {
+      Document document = Jsoup.connect(url).timeout(600 * 1000).ignoreHttpErrors(true).get();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    public void usejsoup() {
+  }
 
-	try {
-	    Document document = Jsoup.connect(url).timeout(600 * 1000).ignoreHttpErrors(true).get();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+  public void getReviews() {
 
-    }
+    changeFile("burgerReviewsAll.txt");
 
-    public void getReviews() {
-	
-	changeFile("burgerReviews.txt");
+    final WebClient webClient = new WebClient();
+    webClient.getOptions().setThrowExceptionOnScriptError(false);
+    webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
 
-	final WebClient webClient = new WebClient();
-	webClient.getOptions().setThrowExceptionOnScriptError(false);
-	webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-	
+    try {
+      webClient.getCurrentWindow().setInnerHeight(60000);
+      HtmlPage page = webClient.getPage(url);
 
-	try {
-	    webClient.getCurrentWindow().setInnerHeight(60000);
-	    HtmlPage page = webClient.getPage(url);
+      List<DomElement> reviewDivs = (List) page.getByXPath("//div[@class='_5pbx userContent']");
 
-	    List<DomElement> reviewDivs = (List) page.getByXPath("//div[@class='_5pbx userContent']");
-//	    List<DomElement> starDivs = (List) page.getByXPath("//i[@class='_51mq img sp_6rp-mgRvb1V sx_9c5cb1']");
-		List<DomElement> starDivs = (List)page.getByXPath(("//div[@class='_1dwg']"));
-	    //_idwg
-	    
-		
-	    
-	    System.out.println("Here they come");
+      System.out.println("Here they come");
 
-//	    for (int i = 0; i < reviewDivs.size(); i++) {
-//
-//		System.out.println("Coming");
-//		
-//		System.out.println("This " + stars.get(i).getTextContent());
-//		  
-//		System.out.println(reviewDivs.get(i));
-//		System.out.println(reviewDivs.get(i).getTextContent());
-//		bw.write(reviewDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-//		bw.flush();
-//	
-//	    }
-	    
-	    List<DomElement> stars1 = (List)page.getByXPath(("//div[@class='_1dwg']//i[@class='_51mq img sp_6rp-mgRvb1V sx_9c5cb1']"));		
-	    List<DomElement> stars2 = (List)page.getByXPath(("//div[@class='_1dwg']//i[@class='_51mq img sp_6rp-mgRvb1V sx_ed9461']"));
-		
-	    System.out.println(stars1.size());
-	    System.out.println(stars2.size());
-	    
-//	    for (int i = 0; i < stars1.size(); i++) {
-//		
-//	    }
+      System.out.println(reviewDivs.size());
 
-	}catch(
+      // 1 tähti = _51mq img sp_6GmSnUtbHfM sx_1657c8
+      // 2 tähti = _51mq img sp_6GmSnUtbHfM sx_5cecf2
+      // 3 tähti = _51mq img sp_6GmSnUtbHfM sx_40e881
+      // 4 tähti = _51mq img sp_6GmSnUtbHfM sx_dd875a
+      // 5 tähti = _51mq img sp_0t0xqs127Wa sx_0f45fb
+
+      List<DomElement> starDivs = (List) page.getByXPath(("//div[@class='_1dwg']"));
+
+    List<DomElement> allstars = (List) page.getByXPath(("//div[@class='_1dwg']//i[@class='_51mq img sp_6GmSnUtbHfM sx_1657c8' or @class='_51mq img sp_6GmSnUtbHfM sx_5cecf2' or @class='_51mq img sp_6GmSnUtbHfM sx_40e881' or @class='_51mq img sp_6GmSnUtbHfM sx_dd875a' or @class='_51mq img sp_0t0xqs127Wa sx_0f45fb']"));
+
+      System.out.println("stars found: " + allstars.size());
+
+      int counter = 0;
+       for (int i = 0; i < reviewDivs.size(); i++) {
+	 String text = reviewDivs.get(i).getTextContent();
+	 String newText1 = text.replaceAll("(\\r|\\n)", " ");
+	 String newText2 = text.replaceAll("Näytä lisää", " ");
+	 bw.write(allstars.get(i).asText() + " " + newText2 + System.getProperty("line.separator"));
+//	 bw.flush();
+	 counter++;
+       }
+
+       System.out.println("counter before rest: " + counter);
+       for (int i = counter; i < allstars.size(); i++){
+	 bw.write(allstars.get(i).asText() + System.getProperty("line.separator"));
+       }
+       
+       bw.close();
+
+    } catch (
 
     FailingHttpStatusCodeException e)
 
     {
-	e.printStackTrace();
-    } catch(
+      e.printStackTrace();
+    } catch (
 
     MalformedURLException e)
 
     {
-	e.printStackTrace();
-    } catch(
+      e.printStackTrace();
+    } catch (
 
     IOException e)
 
     {
+      e.printStackTrace();
+    }
+
+  }
+
+  private void changeFile(String filename) {
+
+    File file = new File("/users/blackstorm/" + filename);
+    System.out.println("changing file to: /users/user/" + filename);
+
+    if (!file.exists()) {
+      try {
+	file.createNewFile();
+      } catch (IOException e) {
 	e.printStackTrace();
+      }
     }
 
+    try {
+      fw = new FileWriter(file.getAbsoluteFile(), false);
+    } catch (IOException e1) {
+      e1.printStackTrace();
     }
 
-    private void changeFile(String filename) {
+    bw = new BufferedWriter(fw);
 
-	File file = new File("/users/user/" + filename);
-	System.out.println("changing file to: /users/user/" + filename);
-
-	if (!file.exists()) {
-	    try {
-		file.createNewFile();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	}
-
-	try {
-	    fw = new FileWriter(file.getAbsoluteFile(), false);
-	} catch (IOException e1) {
-	    e1.printStackTrace();
-	}
-
-	bw = new BufferedWriter(fw);
-
-    }
+  }
 
 }
