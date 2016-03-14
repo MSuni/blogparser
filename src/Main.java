@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
@@ -17,15 +18,46 @@ public class Main {
 
   public static void main(String[] args) {
 
-//      new Burger().usejsoup();
-//      new Burger().getReviews();
-    // BlogivirtaParser virtaParser = new BlogivirtaParser();
-
-//    testWriter();
     
-    Cumulus cumulus = new Cumulus();
+    Facer facer = new Facer();
+    facer.changeFile("face4.txt");
+    facer.setpage("https://www.facebook.com/BurgerKingFI/reviews");
+//    facer.setpage("file:///C:/Users/Blackstorm/Desktop/shen/vabootedu.htm");
+    facer.login("eerotuomisto@luukku.com", "testisalasana");
+    System.out.println("getting user links");
+    ArrayList<String> users = facer.getUsers();
+//    ArrayList<String> users = new ArrayList<String>();
+//    users.add("https://www.facebook.com/profile.php?id=100009909642941");
+    
+    System.out.println("going to scrape user info");
+    System.out.println(": " + users.size());
+    for (int i = 1; i < 6 ; i++){
+      if (users.get(i).equals("https://www.facebook.com/BurgerKingFI/")){
+	continue;
+      }
+      
+      if (users.get(i).substring(25, 32).equals("profile")){
+	facer.getUserInfo(users.get(i), 2);
+      } else {
+	facer.getUserInfo(users.get(i), 1);
+      }
+      System.out.println("here: " + users.get(i));
+    }
+//    for (int i = 0; i < 3; i++){
+//      System.out.println(users.get(i).substring(25, 32));
+//      if (users.get(i).substring(25, 32).equals("profile")){
+//	facer.getUserInfo(users.get(i), 2);
+//      } else {
+//	facer.getUserInfo(users.get(i), 1);
+//      }
+//    }
+//    facer.nodeTest();
+    
+    
+    
+//    Cumulus cumulus = new Cumulus();
 //    cumulus.usehtmlunit(4, 4, "newWave2");
-    cumulus.getOneHotel("http://www.tripadvisor.com/Hotel_Review-g189942-d249056-Reviews-Cumulus_Jyvaskyla_Hotel-Jyvaskyla_Central_Finland.html", "thisworks");
+//    cumulus.getOneHotel("http://www.tripadvisor.com/Hotel_Review-g189942-d249056-Reviews-Cumulus_Jyvaskyla_Hotel-Jyvaskyla_Central_Finland.html", "thisworks");
   }
 
   private static void testWriter() {
