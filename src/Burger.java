@@ -28,6 +28,7 @@ public class Burger {
   String url = "file:///C:/Users/Blackstorm/Desktop/bks/Bks.htm";
   // String url = "https://www.facebook.com/BurgerKingFI/reviews";
   String hotelname;
+  String filename = "burgerReviews";
   BufferedWriter bw;
 
   public Burger() {
@@ -46,7 +47,7 @@ public class Burger {
 
   public void getReviews() {
 
-    changeFile("burgerReviewsAll.txt");
+    changeFile(filename + ".txt");
 
     final WebClient webClient = new WebClient();
     webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -78,16 +79,42 @@ public class Burger {
        for (int i = 0; i < reviewDivs.size(); i++) {
 	 String text = reviewDivs.get(i).getTextContent();
 	 String newText1 = text.replaceAll("(\\r|\\n)", " ");
-	 String newText2 = text.replaceAll("Näytä lisää", " ");
+	 String newText2 = newText1.replaceAll("Näytä lisää", " ");
+	 if (allstars.get(i).asText().equals("1 tähti")){
+	   changeFile(filename + "1.txt");
+	 } else if (allstars.get(i).asText().equals("2 tähti")){
+	   changeFile(filename + "2.txt");
+	 }else if (allstars.get(i).asText().equals("3 tähti")){
+	   changeFile(filename + "3.txt");
+	 } else if (allstars.get(i).asText().equals("4 tähti")){
+	   changeFile(filename + "4.txt");
+	 } else if (allstars.get(i).asText().equals("5 tähti")){
+	   changeFile(filename + "5.txt");
+	 }
 	 bw.write(allstars.get(i).asText() + " " + newText2 + System.getProperty("line.separator"));
+	 System.out.println("writing: " + allstars.get(i).asText() + " " + newText2 + System.getProperty("line.separator"));
+	 bw.flush();
 //	 bw.flush();
 	 counter++;
        }
 
        System.out.println("counter before rest: " + counter);
-       for (int i = counter; i < allstars.size(); i++){
-	 bw.write(allstars.get(i).asText() + System.getProperty("line.separator"));
-       }
+//       for (int i = counter; i < allstars.size(); i++){
+//	 if (allstars.get(i).asText().equals("1 tähti")){
+//	   changeFile(filename + "1.txt");
+//	 } else if (allstars.get(i).asText().equals("2 tähti")){
+//	   changeFile(filename + "2.txt");
+//	 }else if (allstars.get(i).asText().equals("3 tähti")){
+//	   changeFile(filename + "3.txt");
+//	 } else if (allstars.get(i).asText().equals("4 tähti")){
+//	   changeFile(filename + "4.txt");
+//	 } else if (allstars.get(i).asText().equals("5 tähti")){
+//	   changeFile(filename + "5.txt");
+//	 }
+//	 bw.write(allstars.get(i).asText() + System.getProperty("line.separator"));
+//	 System.out.println("writing: " + allstars.get(i).asText() + System.getProperty("line.separator"));
+//	 bw.flush();
+//       }
        
        bw.close();
 
@@ -127,7 +154,7 @@ public class Burger {
     }
 
     try {
-      fw = new FileWriter(file.getAbsoluteFile(), false);
+      fw = new FileWriter(file.getAbsoluteFile(), true);
     } catch (IOException e1) {
       e1.printStackTrace();
     }
