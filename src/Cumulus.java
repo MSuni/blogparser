@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
-
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomAttr;
@@ -30,7 +30,7 @@ public class Cumulus {
 
   public void usehtmlunit(int startHotel, int endHotel, String hotelname) {
     this.hotelname = hotelname;
-    final WebClient webClient = new WebClient();
+    final WebClient webClient = new WebClient(BrowserVersion.FIREFOX_38);
     webClient.getOptions().setThrowExceptionOnScriptError(false);
 
     webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
@@ -60,12 +60,19 @@ public class Cumulus {
 	// List<DomAttr> pageLinks = (List) page.getByXPath("//a[@class='pageNum
 	// taLnk']/@href");
 
+//	boolean popupChecked = false;
+	
 	for (int pageFor = 0; true; pageFor++) {
-	  //popup checkup
+	  
+	//popup checkup
 	  List<DomElement> titleCheck = (List) page.getByXPath("//a[@class='more taLnk']");
 	  if (titleCheck.size() == 0){
 	    pageFor = pageFor - 1;
-	    System.out.println("checking for popup");
+	    System.out.println("checking for popup 1");
+//	    popupChecked = true;
+	    bw.write(page.asText());
+	    bw.flush();
+//	    page = webClient.getPage("https://www.google.fi");
 	    continue;
 	  }
 	  
@@ -80,6 +87,8 @@ public class Cumulus {
 	    System.out.println("Next Page found");
 	    page = webClient.getPage("https://www.tripadvisor.fi" + pageLinks.get(0).getValue().toString());
 	  }
+	  
+	
 
 	  // if (pageFor != 0) {
 	  // page = webClient.getPage("https://www.tripadvisor.fi" +
@@ -102,19 +111,21 @@ public class Cumulus {
 	    // get the text!!
 //	    bw.write("connecting to next review");
 //		  bw.flush();
-		  
-		//popup checkup
-		  List<DomElement> title2Check = (List) page.getByXPath("//span[@class='altHeadInline']");
-		  if (titleCheck.size() == 0){
-		    reviewFor = reviewFor - 1;
-//		    bw.write("connecting to next review");
-//			  bw.flush();
-		    System.out.println("checking for popup");
-		    continue;
-		  }
+	
 		  
 	    page = webClient.getPage("https://www.tripadvisor.fi" + reviewLinks.get(reviewFor).getValue().toString());
-	    webClient.waitForBackgroundJavaScript(3 * 1000);
+	    webClient.waitForBackgroundJavaScript(1 * 1000);
+	    
+		  
+	    // popup checkup
+	    List<DomElement> title2Check = (List) page.getByXPath("//span[@class='altHeadInline']");
+	    if (titleCheck.size() == 0) {
+	       reviewFor = reviewFor - 1;
+	      // bw.write("connecting to next review");
+	      // bw.flush();
+	      System.out.println("checking for popup 2");
+	      continue;
+	    }
 
 //	    bw.write("connected to next review");
 //		  bw.flush();
@@ -220,7 +231,7 @@ public class Cumulus {
 		if (!textDiv.isEmpty()) {
 		  System.out.println("got the text");
 		  System.out.println(hotelFor + " " + textDiv.get(0).getTextContent());
-		  String text = textDiv.get(0).getTextContent() + System.getProperty("line.separator");
+		  String text = hotelFor + " " + textDiv.get(0).getTextContent() + System.getProperty("line.separator");
 		  text.replaceAll("(\\r|\\n)", " ");
 
 		  bw.write(text);
