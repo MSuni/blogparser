@@ -101,8 +101,8 @@ public class Facer {
       HtmlPage page2 = button.click();
       webClient.waitForBackgroundJavaScript(5 * 1000);
       System.out.println(page2.asText());
-      page1 = webClient.getPage("https://www.facebook.com");
-      System.out.println(page1.asText());
+//      page1 = webClient.getPage("https://www.facebook.com");
+//      System.out.println(page1.asText());
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -113,13 +113,15 @@ public class Facer {
   public void getUserInfo(String profileURL, int type) {
 
     // final WebClient webClient = new WebClient();
-    webClient.getOptions().setThrowExceptionOnScriptError(false);
-    webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-
-    webClient.getCurrentWindow().setInnerHeight(60000);
+//    webClient.getOptions().setThrowExceptionOnScriptError(false);
+//    webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+//
+//    webClient.getCurrentWindow().setInnerHeight(60000);
+    
+    
     try {
       // Get work and education
-      HtmlPage page;
+      HtmlPage page = null;
       if (type == 1) {
 	page = webClient.getPage(profileURL + "/about?section=education&pnref=about");
       } else {
@@ -127,6 +129,10 @@ public class Facer {
       }
       webClient.waitForBackgroundJavaScript(1 * 1000);
 
+      bw.write("getting user: " + profileURL + " type: " + type + System.getProperty("line.separator"));
+      bw.write("page: " + page.getTitleText() + System.getProperty("line.separator"));
+//      bw.write(page.asText() + System.getProperty("line.separator"));
+      bw.flush();
       try {
 	Thread.sleep(1000);
       } catch (InterruptedException e) {
@@ -265,7 +271,6 @@ public class Facer {
 	bw.flush();
       }
 
-      bw.close();
 
     } catch (FailingHttpStatusCodeException | IOException e) {
       e.printStackTrace();
