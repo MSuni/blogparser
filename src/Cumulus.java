@@ -1,4 +1,4 @@
-package src;
+
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -385,7 +385,7 @@ public class Cumulus {
   
   private void changeFile(String filename){
     
-    File file = new File("/users/Blackstorm/" + filename);
+    File file = new File("/users/user/" + filename);
     System.out.println("changing file to: /users/Blackstorm/" + filename);
     
     if (!file.exists()) {

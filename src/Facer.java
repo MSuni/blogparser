@@ -1,4 +1,5 @@
-package src;
+
+
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -347,7 +348,7 @@ public class Facer {
 
   public void changeFile(String filename) {
 
-    File file = new File("/users/blackstorm/" + filename);
+    File file = new File("/users/user/" + filename);
     System.out.println("changing file to: /users/user/" + filename);
 
     if (!file.exists()) {
