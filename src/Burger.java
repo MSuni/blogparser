@@ -1,4 +1,4 @@
-
+package src;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,10 +29,11 @@ public class Burger {
   // String url = "https://www.facebook.com/BurgerKingFI/reviews";
   String hotelname;
   String filename = "burgerReviews";
+  String username;
   BufferedWriter bw;
 
-  public Burger() {
-
+  public Burger(String username) {
+    this.username = username;
   }
 
   public void usejsoup() {
@@ -142,8 +143,8 @@ public class Burger {
 
   private void changeFile(String filename) {
 
-    File file = new File("/users/blackstorm/" + filename);
-    System.out.println("changing file to: /users/user/" + filename);
+    File file = new File("/users/" + username + "/" + filename);
+    System.out.println("changing file to: /users/" + username + "/" + filename);
 
     if (!file.exists()) {
       try {
