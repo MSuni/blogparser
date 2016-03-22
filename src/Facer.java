@@ -29,11 +29,13 @@ public class Facer {
 
   String pageURL;
   String filename;
+  String username;
   BufferedWriter bw;
   FileWriter fw = null;
   final WebClient webClient;
 
-  public Facer() {
+  public Facer(String username) {
+    this.username = username;
     webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_11);
   }
 
@@ -354,8 +356,8 @@ public class Facer {
 
   public void changeFile(String filename) {
 
-    File file = new File("/users/user/" + filename);
-    System.out.println("changing file to: /users/user/" + filename);
+    File file = new File("/users/" + username + "/" + filename);
+    System.out.println("changing file to: /users/"+ username +"/" + filename);
 
     if (!file.exists()) {
       try {
