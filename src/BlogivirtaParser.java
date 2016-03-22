@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-=======
+
 package src;
->>>>>>> branch 'master' of https://github.com/MSuni/blogparser.git
 
 import java.io.BufferedWriter;
 import java.io.File;
