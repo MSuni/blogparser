@@ -30,7 +30,7 @@ public class Cumulus {
 
   public void usehtmlunit(int startHotel, int endHotel, String hotelname) {
     this.hotelname = hotelname;
-    final WebClient webClient = new WebClient(BrowserVersion.FIREFOX_38);
+    final WebClient webClient = new WebClient(BrowserVersion.CHROME);
     webClient.getOptions().setThrowExceptionOnScriptError(false);
 
     webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
@@ -65,16 +65,16 @@ public class Cumulus {
 	for (int pageFor = 0; true; pageFor++) {
 	  
 	//popup checkup
-	  List<DomElement> titleCheck = (List) page.getByXPath("//a[@class='more taLnk']");
-	  if (titleCheck.size() == 0){
-	    pageFor = pageFor - 1;
-	    System.out.println("checking for popup 1");
-//	    popupChecked = true;
-	    bw.write(page.asText());
-	    bw.flush();
-//	    page = webClient.getPage("https://www.google.fi");
-	    continue;
-	  }
+//	  List<DomElement> titleCheck = (List) page.getByXPath("//a[@class='more taLnk']");
+//	  if (titleCheck.size() == 0){
+//	    pageFor = pageFor - 1;
+//	    System.out.println("checking for popup 1");
+////	    popupChecked = true;
+////	    bw.write("checking for popup 1");
+////	    bw.flush();
+////	    page = webClient.getPage("https://www.google.fi");
+//	    continue;
+//	  }
 	  
 
 //	  bw.write("popup checkup done");
@@ -85,6 +85,7 @@ public class Cumulus {
 	    break;
 	  } else if (pageFor != 0) {
 	    System.out.println("Next Page found");
+
 	    page = webClient.getPage("https://www.tripadvisor.fi" + pageLinks.get(0).getValue().toString());
 	  }
 	  
@@ -112,20 +113,20 @@ public class Cumulus {
 //	    bw.write("connecting to next review");
 //		  bw.flush();
 	
-		  
 	    page = webClient.getPage("https://www.tripadvisor.fi" + reviewLinks.get(reviewFor).getValue().toString());
+
 	    webClient.waitForBackgroundJavaScript(1 * 1000);
-	    
+
 		  
 	    // popup checkup
-	    List<DomElement> title2Check = (List) page.getByXPath("//span[@class='altHeadInline']");
-	    if (titleCheck.size() == 0) {
-	       reviewFor = reviewFor - 1;
-	      // bw.write("connecting to next review");
-	      // bw.flush();
-	      System.out.println("checking for popup 2");
-	      continue;
-	    }
+//	    List<DomElement> title2Check = (List) page.getByXPath("//span[@class='altHeadInline']");
+//	    if (title2Check.size() == 0) {
+//	       reviewFor = reviewFor - 1;
+//	       bw.write("checking for popup 2");
+//	       bw.flush();
+//	      System.out.println("checking for popup 2");
+//	      continue;
+//	    }
 
 //	    bw.write("connected to next review");
 //		  bw.flush();
