@@ -58,10 +58,11 @@ public class SqlHelper {
     try {
       state = (Statement) connection.createStatement();
       System.out.println("getting info...");
-      ResultSet result = state.executeQuery("SELECT user_name, user_id, app01_id FROM UserRegistry WHERE app01_id IS NOT NULL AND id = " + id  + " LIMIT 10 ");
+//      ResultSet result = state.executeQuery("SELECT user_name, user_id, app01_id FROM UserRegistry WHERE app01_id IS NOT NULL AND id = " + id  + " LIMIT 10 ");
+      ResultSet result = state.executeQuery("SELECT user_name, user_id, app01_id, app02_id FROM UserRegistry WHERE id = " + id  + " LIMIT 10 ");
       System.out.println("result acquired");
       result.next();
-      System.out.println("result: " + result.getString(1) + " " + result.getString(2) + " " + result.getString(3));
+      System.out.println("result: " + result.getString(1) + " " + result.getString(2) + " " + result.getString(3) + " " + result.getString(4));
       result.close();
       state.close();
     } catch (SQLException e) {
