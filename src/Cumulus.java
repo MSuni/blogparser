@@ -31,7 +31,7 @@ public class Cumulus {
 
   public void usehtmlunit(int startHotel, int endHotel, String hotelname) {
     this.hotelname = hotelname;
-    final WebClient webClient = new WebClient(BrowserVersion.FIREFOX_38);
+    final WebClient webClient = new WebClient(BrowserVersion.CHROME);
     webClient.getOptions().setThrowExceptionOnScriptError(false);
 
     webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
