@@ -136,23 +136,6 @@ public class Facer {
       // List<DomElement> divs = (List) page.getByXPath("//div[@class='clearfix
       // _5y02']");
 
-      // LIVING PLACES
-      if (type == 1) {
-	page = webClient.getPage(profileURL + "/about?section=living&pnref=about");
-      } else {
-	page = webClient.getPage(profileURL + "&sk=about&section=living&pnref=about");
-      }
-      webClient.waitForBackgroundJavaScript(1 * 1000);
-      List<DomElement> livDivs = (List) page.getByXPath("//span[@class='_50f5 _50f7']");
-      //
-      System.out.println("Livs coming");
-      System.out.println("size: " + livDivs.size());
-      for (int i = 0; i < livDivs.size(); i++) {
-	System.out.println(livDivs.get(i).getTextContent());
-	bw.write("lived: " + livDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-	bw.flush();
-      }
-
       // CONTACT INFO
       if (type == 1) {
 	page = webClient.getPage(profileURL + "/about?section=contact-info&pnref=about");
@@ -282,10 +265,10 @@ public class Facer {
     return (divs.get(0).getValue());
   }
 
-  
-  //returns ArrayList where first String is Current Employment and second is Education
+  // returns ArrayList where first String is Current Employment and second is
+  // Education
   public ArrayList<String> getEdu(String profileURL, int type) {
-    
+
     HtmlPage page;
     ArrayList<String> workArray = new ArrayList<String>();
     ArrayList<String> eduArray = new ArrayList<String>();
@@ -300,7 +283,8 @@ public class Facer {
       System.out.println("getting user: " + profileURL + " type: " + type);
       System.out.println("page: " + page.getTitleText());
       // EDUCATION AND WORK
-//      List<DomElement> eduDivs = (List) page.getByXPath("//li[@class='_43c8 _5f6p fbEditProfileViewExperience experience']");
+      // List<DomElement> eduDivs = (List) page.getByXPath("//li[@class='_43c8
+      // _5f6p fbEditProfileViewExperience experience']");
       List<DomElement> eduDivs = (List) page.getByXPath("//div[@class='_2lzr _50f5 _50f7']");
       // List<DomElement> eduDivs = (List) page.getByXPath("//div");
 
@@ -311,7 +295,8 @@ public class Facer {
 	List<DomAttr> category = (List) page.getByXPath(eduDivs.get(i).getCanonicalXPath() + "/parent::*/parent::*/parent::*/parent::*/parent::*/parent::*/parent::*/parent::*/@data-pnref");
 	if (category.get(0).getTextContent().equals("work")) {
 	  bw.write("Work: ");
-//	  System.out.println("category: " + category.get(0).getTextContent());
+	  // System.out.println("category: " +
+	  // category.get(0).getTextContent());
 	  workArray.add(eduDivs.get(i).getTextContent());
 	} else {
 	  bw.write("Education: ");
@@ -329,38 +314,43 @@ public class Facer {
       e.printStackTrace();
     }
 
-    //Gather results together for return
+    // Gather results together for return
     ArrayList<String> result = new ArrayList<String>();
-    if (workArray.size() != 0){
+    if (workArray.size() != 0) {
       result.add(workArray.get(0));
-    }else{
+    } else {
       result.add(null);
     }
-    if (eduArray.size() != 0){
+    if (eduArray.size() != 0) {
       result.add(eduArray.get(0));
-    }else{
+    } else {
       result.add(null);
     }
     return result;
   }
 
-  public void getLivs() {
-    // LIVING PLACES
-    HtmlPage page;
-    try {
-      page = webClient.getPage("file:///C:/Users/Blackstorm/Desktop/shen/livings.htm");
+  //returns current hometown
+  public String getLiv(String profileURL, int type) {
 
-      // page = webClient.getPage(profileURL +
-      // "/about?section=living&pnref=about");
-      List<DomElement> livDivs = (List) page.getByXPath("//span[@class='_50f5 _50f7']");
+    HtmlPage page;
+    List<DomElement> livDivs = null;
+    try {
+      if (type == 1) {
+	page = webClient.getPage(profileURL + "/about?section=living&pnref=about");
+      } else {
+	page = webClient.getPage(profileURL + "&sk=about&section=living&pnref=about");
+      }
+      webClient.waitForBackgroundJavaScript(1 * 1000);
+      livDivs = (List) page.getByXPath("//span[@class='_50f5 _50f7']");
       //
       System.out.println("Livs coming");
       System.out.println("size: " + livDivs.size());
       for (int i = 0; i < livDivs.size(); i++) {
 	System.out.println(livDivs.get(i).getTextContent());
-	bw.write(livDivs.get(i).getTextContent() + System.getProperty("line.separator"));
+	bw.write("lived: " + livDivs.get(i).getTextContent() + System.getProperty("line.separator"));
 	bw.flush();
       }
+
     } catch (FailingHttpStatusCodeException e) {
       e.printStackTrace();
     } catch (MalformedURLException e) {
@@ -368,6 +358,13 @@ public class Facer {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    
+    if (livDivs.size() == 0){
+     livDivs.add(null);
+    }
+    
+    return livDivs.get(0).getTextContent();
   }
 
   public void nodeTest() {
