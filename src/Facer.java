@@ -258,16 +258,16 @@ public class Facer {
 	System.out.println(eduDivs.get(i).getTextContent());
 	List<DomAttr> category = (List) page.getByXPath(eduDivs.get(i).getCanonicalXPath() + "/parent::*/parent::*/parent::*/parent::*/parent::*/parent::*/parent::*/parent::*/@data-pnref");
 	if (category.get(0).getTextContent().equals("work")) {
-	  bw.write("Work: ");
+//	  bw.write("Work: ");
 	  // System.out.println("category: " +
 	  // category.get(0).getTextContent());
 	  workArray.add(eduDivs.get(i).getTextContent());
 	} else {
-	  bw.write("Education: ");
+//	  bw.write("Education: ");
 	  eduArray.add(eduDivs.get(i).getTextContent());
 	}
-	bw.write(eduDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-	bw.flush();
+//	bw.write(eduDivs.get(i).getTextContent() + System.getProperty("line.separator"));
+//	bw.flush();
       }
 
     } catch (FailingHttpStatusCodeException e) {
@@ -311,8 +311,8 @@ public class Facer {
       System.out.println("size: " + livDivs.size());
       for (int i = 0; i < livDivs.size(); i++) {
 	System.out.println(livDivs.get(i).getTextContent());
-	bw.write("lived: " + livDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-	bw.flush();
+//	bw.write("lived: " + livDivs.get(i).getTextContent() + System.getProperty("line.separator"));
+//	bw.flush();
       }
     } catch (FailingHttpStatusCodeException e) {
       e.printStackTrace();
@@ -380,8 +380,8 @@ public class Facer {
 
 	}
 
-	bw.write(category.get(0).getTextContent() + ": " + contactDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-	bw.flush();
+//	bw.write(category.get(0).getTextContent() + ": " + contactDivs.get(i).getTextContent() + System.getProperty("line.separator"));
+//	bw.flush();
       }
 
     } catch (FailingHttpStatusCodeException e) {
@@ -424,8 +424,8 @@ public class Facer {
       System.out.println("size: " + relationDivs.size());
       for (int i = 0; i < relationDivs.size(); i++) {
 	System.out.println(relationDivs.get(i).getTextContent());
-	bw.write("RelationShip: " + relationDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-	bw.flush();
+//	bw.write("RelationShip: " + relationDivs.get(i).getTextContent() + System.getProperty("line.separator"));
+//	bw.flush();
       }
 
     } catch (FailingHttpStatusCodeException e) {
