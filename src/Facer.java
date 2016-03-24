@@ -280,6 +280,29 @@ public class Facer {
     }
 
   }
+  
+  public void getUserID(String profileURL){
+    try {
+      HtmlPage page = webClient.getPage(profileURL);
+      webClient.waitForBackgroundJavaScript(1 * 1000);
+
+      List<DomAttr> divs = (List) page.getByXPath("//button[@class='_42ft _4jy0 FriendRequestOutgoing enableFriendListFlyout outgoingButton enableFriendListFlyout hidden_elem _4jy4 _517h _9c6']/@data-profileid");
+      
+      System.out.println("idDivs size: " + divs.size());
+      
+      for (int i = 0; i < divs.size(); i++){
+	System.out.println("here");
+	System.out.println(divs.get(i).getValue());
+      }
+      
+    } catch (FailingHttpStatusCodeException e) {
+      e.printStackTrace();
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   public void getLivs() {
     // LIVING PLACES
