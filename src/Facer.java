@@ -1,7 +1,5 @@
 package src;
 
-
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -104,8 +102,8 @@ public class Facer {
       HtmlPage page2 = button.click();
       webClient.waitForBackgroundJavaScript(5 * 1000);
       System.out.println(page2.asText());
-//      page1 = webClient.getPage("https://www.facebook.com");
-//      System.out.println(page1.asText());
+      // page1 = webClient.getPage("https://www.facebook.com");
+      // System.out.println(page1.asText());
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -115,13 +113,6 @@ public class Facer {
 
   public void getUserInfo(String profileURL, int type) {
 
-    // final WebClient webClient = new WebClient();
-//    webClient.getOptions().setThrowExceptionOnScriptError(false);
-//    webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-//
-//    webClient.getCurrentWindow().setInnerHeight(60000);
-    
-    
     try {
       // Get work and education
       HtmlPage page = null;
@@ -134,7 +125,7 @@ public class Facer {
 
       bw.write("getting user: " + profileURL + " type: " + type + System.getProperty("line.separator"));
       bw.write("page: " + page.getTitleText() + System.getProperty("line.separator"));
-//      bw.write(page.asText() + System.getProperty("line.separator"));
+      // bw.write(page.asText() + System.getProperty("line.separator"));
       bw.flush();
       try {
 	Thread.sleep(1000);
@@ -144,24 +135,6 @@ public class Facer {
       // Overview
       // List<DomElement> divs = (List) page.getByXPath("//div[@class='clearfix
       // _5y02']");
-
-      // EDUCATION AND WORK
-      List<DomElement> eduDivs = (List) page.getByXPath("//li[@class='_43c8 _5f6p fbEditProfileViewExperience experience']");
-      // List<DomElement> eduDivs = (List) page.getByXPath("//div");
-
-      System.out.println("Edu coming");
-      System.out.println("size: " + eduDivs.size());
-      for (int i = 0; i < eduDivs.size(); i++) {
-	System.out.println(eduDivs.get(i).getTextContent());
-	List<DomAttr> category = (List) page.getByXPath(eduDivs.get(i).getCanonicalXPath() + "/parent::*/parent::*/@data-pnref");
-	if (category.get(0).getTextContent().equals("work")) {
-	  bw.write("Work: ");
-	} else {
-	  bw.write("Education: ");
-	}
-	bw.write(eduDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-	bw.flush();
-      }
 
       // LIVING PLACES
       if (type == 1) {
@@ -239,10 +212,10 @@ public class Facer {
 
       // BIO
       //
-      if (type == 1){
-      page = webClient.getPage(profileURL + "/about?section=bio&pnref=about");
+      if (type == 1) {
+	page = webClient.getPage(profileURL + "/about?section=bio&pnref=about");
       } else {
-	      page = webClient.getPage(profileURL + "&sk=about&section=bio&pnref=about");
+	page = webClient.getPage(profileURL + "&sk=about&section=bio&pnref=about");
       }
       webClient.waitForBackgroundJavaScript(1 * 1000);
       List<DomElement> bioDivs = (List) page.getByXPath("//li[@class='_3pw9 _2pi4']");
@@ -251,17 +224,17 @@ public class Facer {
       System.out.println("size: " + bioDivs.size());
       for (int i = 0; i < bioDivs.size(); i++) {
 	System.out.println(bioDivs.get(i).getTextContent());
-	if (!bioDivs.get(i).getTextContent().equals("No additional details to show") || !bioDivs.get(i).getTextContent().equals("No favorite quotes to show")){
-		bw.write(bioDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-		bw.flush();
+	if (!bioDivs.get(i).getTextContent().equals("No additional details to show") || !bioDivs.get(i).getTextContent().equals("No favorite quotes to show")) {
+	  bw.write(bioDivs.get(i).getTextContent() + System.getProperty("line.separator"));
+	  bw.flush();
 	}
       }
 
       // LIFE EVENTS
-      if (type == 1){
-      page = webClient.getPage(profileURL + "/about?section=year-overviews&pnref=about");
+      if (type == 1) {
+	page = webClient.getPage(profileURL + "/about?section=year-overviews&pnref=about");
       } else {
-	      page = webClient.getPage(profileURL + "&sk=about&section=year-overviews&pnref=about");
+	page = webClient.getPage(profileURL + "&sk=about&section=year-overviews&pnref=about");
       }
       webClient.waitForBackgroundJavaScript(1 * 1000);
       List<DomElement> eventDivs = (List) page.getByXPath("//li[@class='_2pi4']");
@@ -274,27 +247,26 @@ public class Facer {
 	bw.flush();
       }
 
-
     } catch (FailingHttpStatusCodeException | IOException e) {
       e.printStackTrace();
     }
 
   }
-  
-  public String getUserID(String profileURL){
-    
+
+  public String getUserID(String profileURL) {
+
     List<DomAttr> divs = null;
     try {
       HtmlPage page = webClient.getPage(profileURL);
       webClient.waitForBackgroundJavaScript(1 * 1000);
       divs = (List) page.getByXPath("//button[@class='_42ft _4jy0 FriendRequestOutgoing enableFriendListFlyout outgoingButton enableFriendListFlyout hidden_elem _4jy4 _517h _9c6']/@data-profileid");
-      
+
       System.out.println("idDivs size: " + divs.size());
-      for (int i = 0; i < divs.size(); i++){
+      for (int i = 0; i < divs.size(); i++) {
 	System.out.println("here");
 	System.out.println(divs.get(i).getValue());
       }
-      
+
     } catch (FailingHttpStatusCodeException e) {
       e.printStackTrace();
     } catch (MalformedURLException e) {
@@ -303,11 +275,73 @@ public class Facer {
       e.printStackTrace();
     }
 
-    if (divs.size() == 0){
+    if (divs.size() == 0) {
       System.out.println("error on id search. Returning null");
       return null;
     }
     return (divs.get(0).getValue());
+  }
+
+  
+  //returns ArrayList where first String is Current Employment and second is Education
+  public ArrayList<String> getEdu(String profileURL, int type) {
+    
+    HtmlPage page;
+    ArrayList<String> workArray = new ArrayList<String>();
+    ArrayList<String> eduArray = new ArrayList<String>();
+    try {
+      if (type == 1) {
+	page = webClient.getPage(profileURL + "/about?section=education&pnref=about");
+      } else {
+	page = webClient.getPage(profileURL + "&sk=about&section=education&pnref=about");
+      }
+      webClient.waitForBackgroundJavaScript(2 * 1000);
+
+      System.out.println("getting user: " + profileURL + " type: " + type);
+      System.out.println("page: " + page.getTitleText());
+      // EDUCATION AND WORK
+//      List<DomElement> eduDivs = (List) page.getByXPath("//li[@class='_43c8 _5f6p fbEditProfileViewExperience experience']");
+      List<DomElement> eduDivs = (List) page.getByXPath("//div[@class='_2lzr _50f5 _50f7']");
+      // List<DomElement> eduDivs = (List) page.getByXPath("//div");
+
+      System.out.println("Edu coming");
+      System.out.println("size: " + eduDivs.size());
+      for (int i = 0; i < eduDivs.size(); i++) {
+	System.out.println(eduDivs.get(i).getTextContent());
+	List<DomAttr> category = (List) page.getByXPath(eduDivs.get(i).getCanonicalXPath() + "/parent::*/parent::*/parent::*/parent::*/parent::*/parent::*/parent::*/parent::*/@data-pnref");
+	if (category.get(0).getTextContent().equals("work")) {
+	  bw.write("Work: ");
+//	  System.out.println("category: " + category.get(0).getTextContent());
+	  workArray.add(eduDivs.get(i).getTextContent());
+	} else {
+	  bw.write("Education: ");
+	  eduArray.add(eduDivs.get(i).getTextContent());
+	}
+	bw.write(eduDivs.get(i).getTextContent() + System.getProperty("line.separator"));
+	bw.flush();
+      }
+
+    } catch (FailingHttpStatusCodeException e) {
+      e.printStackTrace();
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    //Gather results together for return
+    ArrayList<String> result = new ArrayList<String>();
+    if (workArray.size() != 0){
+      result.add(workArray.get(0));
+    }else{
+      result.add(null);
+    }
+    if (eduArray.size() != 0){
+      result.add(eduArray.get(0));
+    }else{
+      result.add(null);
+    }
+    return result;
   }
 
   public void getLivs() {
@@ -386,7 +420,7 @@ public class Facer {
   public void changeFile(String filename) {
 
     File file = new File("/users/" + username + "/" + filename);
-    System.out.println("changing file to: /users/"+ username +"/" + filename);
+    System.out.println("changing file to: /users/" + username + "/" + filename);
 
     if (!file.exists()) {
       try {
