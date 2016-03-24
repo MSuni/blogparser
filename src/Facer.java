@@ -281,15 +281,15 @@ public class Facer {
 
   }
   
-  public void getUserID(String profileURL){
+  public String getUserID(String profileURL){
+    
+    List<DomAttr> divs = null;
     try {
       HtmlPage page = webClient.getPage(profileURL);
       webClient.waitForBackgroundJavaScript(1 * 1000);
-
-      List<DomAttr> divs = (List) page.getByXPath("//button[@class='_42ft _4jy0 FriendRequestOutgoing enableFriendListFlyout outgoingButton enableFriendListFlyout hidden_elem _4jy4 _517h _9c6']/@data-profileid");
+      divs = (List) page.getByXPath("//button[@class='_42ft _4jy0 FriendRequestOutgoing enableFriendListFlyout outgoingButton enableFriendListFlyout hidden_elem _4jy4 _517h _9c6']/@data-profileid");
       
       System.out.println("idDivs size: " + divs.size());
-      
       for (int i = 0; i < divs.size(); i++){
 	System.out.println("here");
 	System.out.println(divs.get(i).getValue());
@@ -302,6 +302,12 @@ public class Facer {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    if (divs.size() == 0){
+      System.out.println("error on id search. Returning null");
+      return null;
+    }
+    return (divs.get(0).getValue());
   }
 
   public void getLivs() {
