@@ -114,7 +114,6 @@ public class Facer {
   public void getUserInfo(String profileURL, int type) {
 
     try {
-      // Get work and education
       HtmlPage page = null;
       if (type == 1) {
 	page = webClient.getPage(profileURL + "/about?section=education&pnref=about");
@@ -135,23 +134,6 @@ public class Facer {
       // Overview
       // List<DomElement> divs = (List) page.getByXPath("//div[@class='clearfix
       // _5y02']");
-
-      // RELATIONSHIP
-      if (type == 1) {
-	page = webClient.getPage(profileURL + "/about?section=relationship&pnref=about");
-      } else {
-	page = webClient.getPage(profileURL + "&sk=about&section=relationship&pnref=about");
-      }
-      webClient.waitForBackgroundJavaScript(1 * 1000);
-      List<DomElement> relationDivs = (List) page.getByXPath("//li[@class='_3pw9 _2pi4 _2ge8']");
-
-      System.out.println("familyDivs coming");
-      System.out.println("size: " + relationDivs.size());
-      for (int i = 0; i < relationDivs.size(); i++) {
-	System.out.println(relationDivs.get(i).getTextContent());
-	bw.write("RelationShip: " + relationDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-	bw.flush();
-      }
 
       // RELATIONSHIP 2
       List<DomElement> relation2Divs = (List) page.getByXPath("//li[@class='_173e _50f8 _50f3']");
@@ -322,7 +304,7 @@ public class Facer {
       } else {
 	page = webClient.getPage(profileURL + "&sk=about&section=living&pnref=about");
       }
-      webClient.waitForBackgroundJavaScript(1 * 1000);
+      webClient.waitForBackgroundJavaScript(3 * 1000);
       livDivs = (List) page.getByXPath("//span[@class='_50f5 _50f7']");
       //
       System.out.println("Livs coming");
@@ -345,14 +327,12 @@ public class Facer {
     return livDivs.get(0).getTextContent();
   }
 
-  //returns array list of contact info.
+  // returns array list of contact info.
   public ArrayList<String> getContact(String profileURL, int type) {
     HtmlPage page;
     List<DomElement> contactDivs = null;
-    String email = null, phone = null, address = null, website = null,
-	year = null, gender = null, language = null, religion = null, political = null;
+    String email = null, phone = null, address = null, website = null, year = null, gender = null, language = null, religion = null, political = null;
 
-   
     try {
       // CONTACT INFO
       if (type == 1) {
@@ -368,8 +348,8 @@ public class Facer {
       for (int i = 0; i < contactDivs.size(); i++) {
 	System.out.println(contactDivs.get(i).getTextContent());
 	List<DomElement> category = (List) page.getByXPath(contactDivs.get(i).getCanonicalXPath() + "/parent::*/parent::*/parent::*/parent::*/descendant::div");
-	
-	switch (category.get(0).getTextContent()){
+
+	switch (category.get(0).getTextContent()) {
 	case "Email":
 	  email = contactDivs.get(i).getTextContent();
 	  break;
@@ -397,9 +377,9 @@ public class Facer {
 	case "Political Views":
 	  political = contactDivs.get(i).getTextContent();
 	  break;
-	    
+
 	}
-	
+
 	bw.write(category.get(0).getTextContent() + ": " + contactDivs.get(i).getTextContent() + System.getProperty("line.separator"));
 	bw.flush();
       }
@@ -411,7 +391,6 @@ public class Facer {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    
 
     ArrayList<String> results = new ArrayList<String>();
     results.add(email);
@@ -424,6 +403,46 @@ public class Facer {
     results.add(religion);
     results.add(political);
     return results;
+  }
+
+  public String getRelationship(String profileURL, int type) {
+
+    HtmlPage page;
+    List<DomElement> relationDivs = null;
+    // RELATIONSHIP
+    try {
+      if (type == 1) {
+	page = webClient.getPage(profileURL + "/about?section=relationship&pnref=about");
+
+      } else {
+	page = webClient.getPage(profileURL + "&sk=about&section=relationship&pnref=about");
+      }
+      webClient.waitForBackgroundJavaScript(1 * 1000);
+      relationDivs = (List) page.getByXPath("//li[@class='_3pw9 _2pi4 _2ge8']");
+
+      System.out.println("relationship coming");
+      System.out.println("size: " + relationDivs.size());
+      for (int i = 0; i < relationDivs.size(); i++) {
+	System.out.println(relationDivs.get(i).getTextContent());
+	bw.write("RelationShip: " + relationDivs.get(i).getTextContent() + System.getProperty("line.separator"));
+	bw.flush();
+      }
+
+    } catch (FailingHttpStatusCodeException e) {
+      e.printStackTrace();
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    
+    String result = null;
+    
+    if (relationDivs.size() != 0){
+      result = relationDivs.get(0).getTextContent();
+    }
+
+    return result;
   }
 
   public void nodeTest() {
