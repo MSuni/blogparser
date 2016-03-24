@@ -136,24 +136,6 @@ public class Facer {
       // List<DomElement> divs = (List) page.getByXPath("//div[@class='clearfix
       // _5y02']");
 
-      // CONTACT INFO
-      if (type == 1) {
-	page = webClient.getPage(profileURL + "/about?section=contact-info&pnref=about");
-      } else {
-	page = webClient.getPage(profileURL + "&sk=about&section=contact-info&pnref=about");
-      }
-      webClient.waitForBackgroundJavaScript(2 * 1000);
-      List<DomElement> contactDivs = (List) page.getByXPath("//span[@class='_50f4']");
-
-      System.out.println("contacts coming");
-      System.out.println("size: " + contactDivs.size());
-      for (int i = 0; i < contactDivs.size(); i++) {
-	System.out.println(contactDivs.get(i).getTextContent());
-	List<DomElement> category = (List) page.getByXPath(contactDivs.get(i).getCanonicalXPath() + "/parent::*/parent::*/parent::*/parent::*/descendant::div");
-	bw.write(category.get(0).getTextContent() + ": " + contactDivs.get(i).getTextContent() + System.getProperty("line.separator"));
-	bw.flush();
-      }
-
       // RELATIONSHIP
       if (type == 1) {
 	page = webClient.getPage(profileURL + "/about?section=relationship&pnref=about");
@@ -329,7 +311,7 @@ public class Facer {
     return result;
   }
 
-  //returns current hometown
+  // returns current living location
   public String getLiv(String profileURL, int type) {
 
     HtmlPage page;
@@ -350,6 +332,77 @@ public class Facer {
 	bw.write("lived: " + livDivs.get(i).getTextContent() + System.getProperty("line.separator"));
 	bw.flush();
       }
+    } catch (FailingHttpStatusCodeException e) {
+      e.printStackTrace();
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (livDivs.size() == 0) {
+      livDivs.add(null);
+    }
+    return livDivs.get(0).getTextContent();
+  }
+
+  //returns array list of contact info.
+  public ArrayList<String> getContact(String profileURL, int type) {
+    HtmlPage page;
+    List<DomElement> contactDivs = null;
+    String email = null, phone = null, address = null, website = null,
+	year = null, gender = null, language = null, religion = null, political = null;
+
+   
+    try {
+      // CONTACT INFO
+      if (type == 1) {
+	page = webClient.getPage(profileURL + "/about?section=contact-info&pnref=about");
+      } else {
+	page = webClient.getPage(profileURL + "&sk=about&section=contact-info&pnref=about");
+      }
+      webClient.waitForBackgroundJavaScript(2 * 1000);
+      contactDivs = (List) page.getByXPath("//span[@class='_50f4']");
+
+      System.out.println("contacts coming");
+      System.out.println("size: " + contactDivs.size());
+      for (int i = 0; i < contactDivs.size(); i++) {
+	System.out.println(contactDivs.get(i).getTextContent());
+	List<DomElement> category = (List) page.getByXPath(contactDivs.get(i).getCanonicalXPath() + "/parent::*/parent::*/parent::*/parent::*/descendant::div");
+	
+	switch (category.get(0).getTextContent()){
+	case "Email":
+	  email = contactDivs.get(i).getTextContent();
+	  break;
+	case "Phone Number":
+	  phone = contactDivs.get(i).getTextContent();
+	  break;
+	case "Address":
+	  address = contactDivs.get(i).getTextContent();
+	  break;
+	case "website":
+	  website = contactDivs.get(i).getTextContent();
+	  break;
+	case "year":
+	  year = contactDivs.get(i).getTextContent();
+	  break;
+	case "Gender":
+	  gender = contactDivs.get(i).getTextContent();
+	  break;
+	case "Languages":
+	  language = contactDivs.get(i).getTextContent();
+	  break;
+	case "Religious Views":
+	  religion = contactDivs.get(i).getTextContent();
+	  break;
+	case "Political Views":
+	  political = contactDivs.get(i).getTextContent();
+	  break;
+	    
+	}
+	
+	bw.write(category.get(0).getTextContent() + ": " + contactDivs.get(i).getTextContent() + System.getProperty("line.separator"));
+	bw.flush();
+      }
 
     } catch (FailingHttpStatusCodeException e) {
       e.printStackTrace();
@@ -358,13 +411,19 @@ public class Facer {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    
 
-    
-    if (livDivs.size() == 0){
-     livDivs.add(null);
-    }
-    
-    return livDivs.get(0).getTextContent();
+    ArrayList<String> results = new ArrayList<String>();
+    results.add(email);
+    results.add(phone);
+    results.add(address);
+    results.add(website);
+    results.add(year);
+    results.add(gender);
+    results.add(language);
+    results.add(religion);
+    results.add(political);
+    return results;
   }
 
   public void nodeTest() {
