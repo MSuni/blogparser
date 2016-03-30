@@ -54,7 +54,6 @@ public class SqlHelper {
   }
 
   public ArrayList<String> getUserID(int id) {
-
     ArrayList<String> userInfo = new ArrayList<String>();
     Statement state;
     try {
@@ -76,6 +75,7 @@ public class SqlHelper {
     }
     
     return userInfo;
+    // String array -- username, realID, app1ID, app2ID
   }
 
 }

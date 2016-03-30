@@ -21,10 +21,11 @@ public class Cumulus {
   FileWriter fw = null;
   String url = "https://www.tripadvisor.fi/Search?q=cumulus&geo=189896&pid=3826&typeaheadRedirect=true&redirect=&startTime=1456377062958&uiOrigin=MASTHEAD&returnTo=https%25253A__2F____2F__www__2E__tripadvisor__2E__fi__2F__";
   String hotelname;
+  String username;
   BufferedWriter bw;
   
-  public Cumulus() {
-
+  public Cumulus(String username) {
+	  this.username = username;
   }
 
 
@@ -36,7 +37,7 @@ public class Cumulus {
     webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
 
 
-    changeFile(hotelname + "1.txt");
+    changeFile(username, hotelname + "1.txt");
 
     try {
       HtmlPage page = webClient.getPage("https://www.tripadvisor.fi/Search?q=cumulus&geo=189896&pid=3826&typeaheadRedirect=true&redirect=&startTime=1456377062958&uiOrigin=MASTHEAD&returnTo=https%25253A__2F____2F__www__2E__tripadvisor__2E__fi__2F__");
@@ -150,81 +151,81 @@ public class Cumulus {
 	    
 	    switch (rating1.get(0).getValue()){
 	    case "1/5 tähteä":
-		changeFile(hotelname + "1.txt");
+		changeFile(username, hotelname + "1.txt");
 	      break;
 	    case "2/5 tähteä":
-		changeFile(hotelname + "2.txt");
+		changeFile(username, hotelname + "2.txt");
 	      break;
 	    case "3/5 tähteä":
-		changeFile(hotelname + "3.txt");
+		changeFile(username, hotelname + "3.txt");
 	      break;
 	    case "4/5 tähteä":
-		changeFile(hotelname + "4.txt");
+		changeFile(username, hotelname + "4.txt");
 	      break;
 	    case "5/5 tähteä":
-		changeFile(hotelname + "5.txt");
+		changeFile(username, hotelname + "5.txt");
 	      break;
 	    }
 	    } catch (IndexOutOfBoundsException e) {
 	      System.out.println("Stars not found");
-	      changeFile(hotelname + "0.txt");
+	      changeFile(username, hotelname + "0.txt");
 	    }
 	    
 	    //	    try {
 //	      rating1 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s10']/@alt");
 //	      if (rating1.get(0).toString() != "" ) {
-//		changeFile(hotelname + "1.txt");
+//		changeFile(username, hotelname + "1.txt");
 //	      }
-////		changeFile(hotelname + "1.txt");
+////		changeFile(username, hotelname + "1.txt");
 //	    } catch (IndexOutOfBoundsException e) {
 //	      System.out.println("Right amount of stars not found");
 //	    }
 //	    try {
 //	      rating2 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s20']/@alt");
 //	      if (rating2.get(0).toString() != "" ) {
-//		changeFile(hotelname + "2.txt");
+//		changeFile(username, hotelname + "2.txt");
 //	      }
-////		changeFile(hotelname + "2.txt");
+////		changeFile(username, hotelname + "2.txt");
 //	    }catch (IndexOutOfBoundsException e) {
 //	      System.out.println("Right amount of stars not found");
 //	    } try {
 //	      rating3 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s30']/@alt");
 //	      if (rating3.get(0).toString() != "" ) {
-//		changeFile(hotelname + "3.txt");
+//		changeFile(username, hotelname + "3.txt");
 //	      }
-////		changeFile(hotelname + "3.txt");
+////		changeFile(username, hotelname + "3.txt");
 //	    }catch (IndexOutOfBoundsException e) {
 //	      System.out.println("Right amount of stars not found");
 //	    } try {
 //	      rating4 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s40']/@alt");
 //	      if (rating4.get(0).toString() != "" ) {
-//		changeFile(hotelname + "4.txt");
+//		changeFile(username, hotelname + "4.txt");
 //	      }
-////		changeFile(hotelname + "4.txt");
+////		changeFile(username, hotelname + "4.txt");
 //	    }catch (IndexOutOfBoundsException e) {
 //	      System.out.println("Right amount of stars not found");
 //	    } 
 //	    try {
 //	      rating5 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s50']/@alt");
 //	      if (rating5.get(0).toString() != "" ) {
-//		changeFile(hotelname + "5.txt");
+//		changeFile(username, hotelname + "5.txt");
 //	      }
-////		changeFile(hotelname + "5.txt");
+////		changeFile(username, hotelname + "5.txt");
 //	    }catch (IndexOutOfBoundsException e) {
 //	      System.out.println("Right amount of stars not found");
 //	    }
 //	      rating2 = (List) page.getByXPath("//img[@class='sprite-rating_no_fill rating_no_fill no30']/@alt");
 	       // || rating2.get(0).getValue().toString() == "3/5 tähteä") {
 //	      if (rating1.get(0).toString() != "" ) {
-//		changeFile(hotelname + "1.txt");
+//		changeFile(username, hotelname + "1.txt");
 //	      } else if (rating2.get(0).toString() != "" ) {
-//		changeFile(hotelname + "2.txt");
+//		changeFile(username, hotelname + "2.txt");
 //	      } else if(rating3.get(0).toString() != "" ) {
-//		changeFile(hotelname + "3.txt");
+//		changeFile(username, hotelname + "3.txt");
 //	      } else if(rating4.get(0).toString() != "" ) {
-//		changeFile(hotelname + "4.txt");
+//		changeFile(username, hotelname + "4.txt");
 //	      } else if(rating5.get(0).toString() != "" ) {
-//		changeFile(hotelname + "5.txt");
+//		changeFile(username, hotelname + "5.txt");
 //	      }
 	    
 		System.out.println("rating found");
@@ -294,7 +295,7 @@ public class Cumulus {
     webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
 
 
-    changeFile(hotelname + "1.txt");
+    changeFile(username, hotelname + "1.txt");
     
     
     try {
@@ -347,7 +348,7 @@ public class Cumulus {
 	    try {
 	      rating1 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s10']/@property");
 	      if (rating1.get(0).toString() != "" ) {
-		changeFile(hotelname + "1.txt");
+		changeFile(username, hotelname + "1.txt");
 	      }
 	    } catch (IndexOutOfBoundsException e) {
 	      System.out.println("Right amount of stars not found");
@@ -355,28 +356,28 @@ public class Cumulus {
 	    try {
 	      rating2 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s20']/@property");
 	      if (rating2.get(0).toString() != "" ) {
-		changeFile(hotelname + "2.txt");
+		changeFile(username, hotelname + "2.txt");
 	      }
 	    }catch (IndexOutOfBoundsException e) {
 	      System.out.println("Right amount of stars not found");
 	    } try {
 	      rating3 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s30']/@property");
 	      if (rating3.get(0).toString() != "" ) {
-		changeFile(hotelname + "3.txt");
+		changeFile(username, hotelname + "3.txt");
 	      }
 	    }catch (IndexOutOfBoundsException e) {
 	      System.out.println("Right amount of stars not found");
 	    } try {
 	      rating4 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s40']/@property");
 	      if (rating4.get(0).toString() != "" ) {
-		changeFile(hotelname + "4.txt");
+		changeFile(username, hotelname + "4.txt");
 	      }
 	    }catch (IndexOutOfBoundsException e) {
 	      System.out.println("Right amount of stars not found");
 	    } try {
 	      rating5 = (List) page.getByXPath("//img[@class='sprite-rating_s_fill rating_s_fill s50']/@property");
 	      if (rating5.get(0).toString() != "" ) {
-		changeFile(hotelname + "5.txt");
+		changeFile(username, hotelname + "5.txt");
 	      }
 	    }catch (IndexOutOfBoundsException e) {
 	      System.out.println("Right amount of stars not found");
@@ -448,9 +449,9 @@ public class Cumulus {
     
   
   
-  private void changeFile(String filename){
+  private void changeFile(String username, String filename){
     
-    File file = new File("/users/Blackstorm/" + filename);
+    File file = new File("/users/" + username + "/" + filename);
     System.out.println("changing file to: /users/Blackstorm/" + filename);
     
     if (!file.exists()) {
