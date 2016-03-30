@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.Statement;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
@@ -52,8 +53,9 @@ public class SqlHelper {
       }
   }
 
-  public void getUserID(int id) {
+  public ArrayList<String> getUserID(int id) {
 
+    ArrayList<String> userInfo = new ArrayList<String>();
     Statement state;
     try {
       state = (Statement) connection.createStatement();
@@ -63,11 +65,17 @@ public class SqlHelper {
       System.out.println("result acquired");
       result.next();
       System.out.println("result: " + result.getString(1) + " " + result.getString(2) + " " + result.getString(3) + " " + result.getString(4));
+      userInfo.add(result.getString(1));
+      userInfo.add(result.getString(2));
+      userInfo.add(result.getString(3));
+      userInfo.add(result.getString(4));
       result.close();
       state.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    
+    return userInfo;
   }
 
 }
