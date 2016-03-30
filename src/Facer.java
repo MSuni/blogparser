@@ -444,6 +444,38 @@ public class Facer {
 
     return result;
   }
+  
+  public int getFriendNumber(String profileURL){
+    
+    List<DomElement> divs = null;
+    int friendNumber;
+    try {
+      HtmlPage page = webClient.getPage(profileURL);
+      webClient.waitForBackgroundJavaScript(1 * 1000);
+      divs = (List) page.getByXPath("//a[@class='_39g5']");
+
+      System.out.println("friendDivs size: " + divs.size());
+      for (int i = 0; i < divs.size(); i++) {
+	System.out.println("here");
+	System.out.println(divs.get(i).getTextContent());
+      }
+
+    } catch (FailingHttpStatusCodeException e) {
+      e.printStackTrace();
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    if (divs.size() == 0) {
+      System.out.println("error on friend number search. Returning 0");
+      return 0;
+    } else {
+      return Integer.parseInt(divs.get(0).getTextContent());
+    }
+  }
+  
 
   public void nodeTest() {
 
